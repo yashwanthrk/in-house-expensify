@@ -5,6 +5,7 @@ from .serializers import TransactionSerializer
 import openai
 from django.conf import settings
 
+
 class CategorizeExpenseView(views.APIView):
     def post(self, request, *args, **kwargs):
         transactions = request.data.get("transactions", [])
@@ -30,7 +31,9 @@ class CategorizeExpenseView(views.APIView):
             temperature=0.5,
         )
 
-        categorized_transactions = self.parse_response(response.choices[0].text, transactions)
+        categorized_transactions = self.parse_response(
+            response.choices[0].text, transactions
+        )
         return categorized_transactions
 
     def parse_response(self, response, transactions):
