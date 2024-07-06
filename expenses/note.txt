@@ -1,0 +1,32 @@
+python manage.py makemigrations
+python manage.py migrate
+
+
+python manage.py showmigrations
+
+
+python3 manage.py runserver
+
+
+
+
+if migration doesn't work
+
+
+If Necessary:
+Delete SQLite Database:
+
+bash
+Copy code
+rm db.sqlite3
+Recreate the Database and Apply Migrations:
+
+bash
+Copy code
+python manage.py migrate
+Check Migration Status
+Verify that all migrations have been applied:
+
+bash
+Copy code
+python manage.py showmigrations

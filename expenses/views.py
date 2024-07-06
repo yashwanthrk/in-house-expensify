@@ -11,6 +11,8 @@ from rest_framework_simplejwt.tokens import RefreshToken
 import logging
 
 logger = logging.getLogger(__name__)
+
+
 class RegisterView(views.APIView):
     def post(self, request):
         print(request.data)
@@ -24,22 +26,26 @@ class RegisterView(views.APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-
 class LoginView(views.APIView):
     def post(self, request):
-        email = request.data.get('email')
-        password = request.data.get('password')
+        email = request.data.get("email")
+        password = request.data.get("password")
         logger.debug(f"Login attempt for email: {email}")
         user = authenticate(username=email, password=password)  # Note: username=email
         if user:
             logger.debug(f"Authentication successful for email: {email}")
             refresh = RefreshToken.for_user(user)
-            return Response({
-                'refresh': str(refresh),
-                'access': str(refresh.access_token),
-            })
+            return Response(
+                {
+                    "refresh": str(refresh),
+                    "access": str(refresh.access_token),
+                }
+            )
         logger.debug(f"Authentication failed for email: {email}")
-        return Response({'error': 'Invalid Credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+        return Response(
+            {"error": "Invalid Credentials"}, status=status.HTTP_401_UNAUTHORIZED
+        )
+
 
 class CategorizeExpenseView(views.APIView):
     def post(self, request, *args, **kwargs):
@@ -66,7 +72,9 @@ class CategorizeExpenseView(views.APIView):
             temperature=0.5,
         )
 
-        categorized_transactions = self.parse_response(response.choices[0].text, transactions)
+        categorized_transactions = self.parse_response(
+            response.choices[0].text, transactions
+        )
         return categorized_transactions
 
     def parse_response(self, response, transactions):
