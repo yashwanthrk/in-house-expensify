@@ -20,11 +20,14 @@ class User(AbstractUser):
 
 
 class Transaction(models.Model):
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="transactions", default=1
+    )
     transaction_date = models.DateField()
     amount = models.DecimalField(max_digits=10, decimal_places=2)
+    description = models.TextField()
     category = models.CharField(max_length=50)
-    description = models.CharField(max_length=255)
-    currency = models.CharField(max_length=10, default="INR")
+    currency = models.CharField(max_length=3)
 
     def __str__(self):
-        return f"{self.transaction_date} - {self.amount} - {self.category} - {self.description}"
+        return f"{self.description} - {self.amount} {self.currency}"
